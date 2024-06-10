@@ -7,7 +7,6 @@
 #include <vector>
 #include "liquid.h"
 #include "bottle.h"
-#include "enterdata.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,6 +28,8 @@ private slots:
     void on_DeleteBottleButton_clicked();
 
     void on_InitLiquidButton_clicked();
+
+    void enterData();
 
 private:
     Ui::MainWindow *ui;

@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    connect(ui->enterButton, SIGNAL(clicked()), this, SLOT(enterData()));
 }
 
 MainWindow::~MainWindow()
@@ -32,7 +34,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
     if(event->key()==Qt::Key_3)
     {
-        on_DeleteBottleButton_clicked();
+        on_InitLiquidButton_clicked();
     }
 
     if(event->key()==Qt::Key_4)
@@ -95,9 +97,47 @@ void MainWindow::on_DeleteBottleButton_clicked()
     }
 }
 
-void MainWindow::on_InitLiquidButton_clicked()
+void MainWindow::enterData()
 {
     Liquid l;
 
-    QMessageBox::information(this, "", "Enter density.");
+    QString ro = ui->inputLine->text();
+    if(ro.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter data."));
+    }
+    else
+    {
+        l.setRo(ro.toDouble());
+    }
+
+    QString color = ui->inputLine2->text();
+    if(color.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter data."));
+    }
+    else
+    {
+        l.setColor(color.toStdString());
+    }
+
+    liquids.push_back(l);
+
+    QString str = "Liquid No. 1: ro = " + QString::number(l.getRo())
+            + ", color = \"" + QString::fromStdString(l.getColor()) + "\"";
+
+    ui->LiquidList->addItem(str);
+    QMessageBox::information(this, "", "Liquid initiated!");
+
+}
+
+void MainWindow::on_InitLiquidButton_clicked()
+{
+    //QMessageBox::information(this, "", "Enter density.");
+    ui->statusLabel->setText("Enter density.");
+    ui->enterButton->setEnabled(true);
+    ui->inputLine->setEnabled(true);
+    ui->inputLine2->setEnabled(true);
 }
